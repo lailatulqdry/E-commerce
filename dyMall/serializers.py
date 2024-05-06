@@ -1,7 +1,21 @@
 from rest_framework import serializers
-from .models import Kategori
+from .models import Kategori, Produk
 
-class KategoriSerializer(serializers.Serializer):
+class ProdukSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Produk
+        fields = [
+            "id",
+            "name",
+            "harga",
+            "deskripsi",
+            "gambar", 
+            "kategori"
+            ]
+
+class KategoriSerializer(serializers.ModelSerializer):
+    produk = ProdukSerializer(many=True, read_only=True)
     class Meta:
         model = Kategori
-        fields = ["id", "nama"]
+        fields = '__all__'
+
