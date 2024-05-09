@@ -1,5 +1,5 @@
-from dyMall.models import Kategori, Produk
-from dyMall.serializers import KategoriSerializer, ProdukSerializer
+from dyMall.models import Kategori, Produk, PenilaianProduk, Toko
+from dyMall.serializers import KategoriSerializer, ProdukSerializer, PenilaianProdukSerializer, TokoSerializer
 from rest_framework import generics
 from django.http import Http404
 from rest_framework.views import APIView
@@ -70,3 +70,26 @@ class ProdukDetail(APIView):
         produk = self.get_object(pk)
         produk.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class PenilaianProdukList(generics.ListCreateAPIView):
+    queryset = PenilaianProduk.objects.all()
+    serializer_class = PenilaianProdukSerializer
+
+class PenilaianProdukDetail(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def get_object(self, pk):
+        try:
+            return PenilaianProduk.objects.get(pk=pk)
+        except PenilaianProduk.DoesNotExist:
+            raise Http404
+        
+    def delete(self, request, pk, format=None):
+        penilaianproduk = self.get_object(pk)
+        penilaianproduk.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class TokoList(generics.ListCreateAPIView):
+    queryset = Toko.objects.all()
+    serializer_class = TokoSerializer
